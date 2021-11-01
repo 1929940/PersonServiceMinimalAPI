@@ -1,7 +1,9 @@
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PersonServiceMinimalAPI.Context;
 using PersonServiceMinimalAPI.Installer;
+using PersonServiceMinimalAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +18,11 @@ builder.Services.AddSwaggerGen(c => {
     });
 });
 
-var app = builder.Build();
+builder.Services.AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<PostPersonDto>());
 
+var app = builder.Build();
 new Installer(app).Install();
+
 
 app.UseSwagger();
 

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PersonServiceMinimalAPI.Context;
 using PersonServiceMinimalAPI.Installer;
+using FluentValidation;
 
 namespace PersonServiceMinimalAPI.Controller {
     public class PersonsController : InstallableBase {
@@ -28,12 +29,17 @@ namespace PersonServiceMinimalAPI.Controller {
             return Results.Ok(person);
         }
 
-        public IResult PostPerson(DataContext context, PostPersonDto personDto) {
-            if (string.IsNullOrEmpty(personDto.FirstName))
-                return Results.BadRequest("FirstName is required.");
+        public IResult PostPerson(
+            DataContext context,
+            PostPersonDto personDto,
+            IValidator<PostPersonDto> validator) {
 
-            if (string.IsNullOrEmpty(personDto.LastName)) 
-                return Results.BadRequest("LastName is required.");
+            var validationResult = validator.Validate(personDto);
+
+            if (validationResult.IsValid == false) {
+                var errors = validationResult.Errors.Select(x => x.ErrorMessage);
+                return Results.BadRequest(errors);
+            }
 
             var person = new Person() {
                 FirstName = personDto.FirstName,

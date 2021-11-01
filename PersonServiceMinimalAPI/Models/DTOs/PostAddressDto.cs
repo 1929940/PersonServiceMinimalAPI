@@ -1,5 +1,5 @@
 ﻿namespace PersonServiceMinimalAPI.Models {
-    public class AddressDto {
+    public class PostAddressDto {
         public string City { get; set; }
         public string PostalCode { get; set; }
         public string Province { get; set; }
