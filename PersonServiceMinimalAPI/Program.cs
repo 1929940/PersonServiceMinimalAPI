@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PersonServiceMinimalAPI.Context;
-using PersonServiceMinimalAPI.Controller;
+using PersonServiceMinimalAPI.Installer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,12 +18,12 @@ builder.Services.AddSwaggerGen(c => {
 
 var app = builder.Build();
 
+new Installer(app).Install();
+
 app.UseSwagger();
 
 app.UseSwaggerUI(c => {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "PersonServiceMinimalAPI V1");
 });
-
-new PersonsController(app).MapEndpoints();
 
 app.Run();

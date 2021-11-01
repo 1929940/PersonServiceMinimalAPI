@@ -1,16 +1,14 @@
 ﻿using PersonServiceMinimalAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using PersonServiceMinimalAPI.Context;
+using PersonServiceMinimalAPI.Installer;
 
 namespace PersonServiceMinimalAPI.Controller {
-    public class PersonsController {
-        private readonly WebApplication _app;
-
-        public PersonsController(WebApplication app) {
-            _app = app;
+    public class PersonsController : InstallableBase {
+        public PersonsController(WebApplication app) : base(app) {
         }
 
-        public void MapEndpoints() {
+        public override void Install() {
             _app.MapGet("/persons", GetPersons);
             _app.MapGet("/persons/{id}", GetPerson);
             _app.MapPost("/persons", PostPerson);
@@ -55,5 +53,6 @@ namespace PersonServiceMinimalAPI.Controller {
 
             return Results.Created($"/persons/{person.Id}", person);
         }
+
     }
 }
