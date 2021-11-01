@@ -2,8 +2,8 @@
 using PersonServiceMinimalAPI.Models;
 
 namespace PersonServiceMinimalAPI.Context {
-    public class Context : DbContext {
-        public Context(DbContextOptions options) : base(options) {
+    public class DataContext : DbContext {
+        public DataContext(DbContextOptions options) : base(options) {
         }
 
         public DbSet<Address> Addresses { get; set; }
